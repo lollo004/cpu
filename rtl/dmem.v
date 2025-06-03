@@ -9,6 +9,12 @@ module dmem(
     // reg [15:0] mem [0:65535];  // 64K words (128KB)
     reg [15:0] mem [0:2];
 
+    // Load initial data
+    initial begin
+        // Load initial data
+        $readmemh("mem/data.mem", mem);
+    end    
+
     always @(posedge clk) begin
         if (mem_write)
             mem[addr[15:1]] <= write_data;  // Word addressing
