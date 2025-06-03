@@ -16,7 +16,7 @@ module tb_cpu;
     initial begin
         $dumpfile("cpu.vcd");
         $dumpvars(0, tb_cpu);
-        #10 rst = 0;       // Release reset after 10ns
-        #1000 $finish;     // Run for 1000ns
+        #5 rst = 0;       // Release reset after 10ns
+        #200 $finish;
     end
 endmodule
