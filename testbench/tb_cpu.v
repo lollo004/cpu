@@ -5,7 +5,14 @@ module tb_cpu;
     cpu uut (.*);
     
     always #5 clk = ~clk;  // 10ns clock period
-    
+
+    always @(posedge clk) begin
+        $display("r2=%d, r3=%d, r4=%d", 
+            uut.regfile_inst.registers[2],
+            uut.regfile_inst.registers[3],
+            uut.regfile_inst.registers[4]);
+        end
+            
     initial begin
         $dumpfile("cpu.vcd");
         $dumpvars(0, tb_cpu);
