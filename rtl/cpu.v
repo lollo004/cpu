@@ -88,7 +88,7 @@ module cpu(
     // Branch/jump logic
     wire branch_condition = branch & zero;
     wire [15:0] branch_target = PC_plus_2 + (sign_ext_offset << 1);
-    wire [15:0] jump_target = {4'b0, Offset12} << 1;
+    wire [15:0] jump_target = {PC_plus_2[15:12], Offset12} << 1;
     wire [15:0] next_PC = 
         jump          ? jump_target :
         branch_condition ? branch_target : 
