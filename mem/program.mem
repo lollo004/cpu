@@ -5,8 +5,8 @@
 1235  // sub r5, r2, r3: r5 = 10 - 5 = 5
 2236  // and r6, r2, r3: r6 = 10 & 5 = 0
 3237  // or r7, r2, r3 : r7 = 10 | 5 = 15
-5044  // sw r4, 4(r0)  : mem[4] = r4 = 15
-4084  // lw r8, 4(r0)  : r8 = mem[4] = 15
+5043  // sw r4, 3(r0)  : mem[3] = r4 = 15
+4083  // lw r8, 3(r0)  : r8 = mem[3] = 15
 6481  // beq r4, r8, 1: branch if r4==r8 (taken)
 0000  // nop (skipped)
 7000  // jmp 0         : restart program
