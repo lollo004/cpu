@@ -11,60 +11,62 @@ module control(
     output reg reg_dst
 );
     always @(*) begin
+        // Default values
+        reg_write = 0;
+        mem_read = 0;
+        mem_write = 0;
+        mem_to_reg = 0;
+        alu_op = 2'b00;
+        branch = 0;
+        jump = 0;
+        alu_src = 0;
+        reg_dst = 0;
+
         case (opcode)
             // ADD
             4'b0000: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b1000;
-                {alu_op, branch, jump} = 3'b000;
-                {alu_src, reg_dst} = 2'b01;
+                reg_write = 1;
+                reg_dst = 1;
+                alu_op = 2'b00;
             end
             // SUB
             4'b0001: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b1000;
-                {alu_op, branch, jump} = 3'b010;
-                {alu_src, reg_dst} = 2'b01;
+                reg_write = 1;
+                reg_dst = 1;
+                alu_op = 2'b01;
             end
             // AND
             4'b0010: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b1000;
-                {alu_op, branch, jump} = 3'b100;
-                {alu_src, reg_dst} = 2'b01;
+                reg_write = 1;
+                reg_dst = 1;
+                alu_op = 2'b10;
             end
             // OR
             4'b0011: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b1000;
-                {alu_op, branch, jump} = 3'b110;
-                {alu_src, reg_dst} = 2'b01;
+                reg_write = 1;
+                reg_dst = 1;
+                alu_op = 2'b11;
             end
             // LW
             4'b0100: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b1101;
-                {alu_op, branch, jump} = 3'b000;
-                {alu_src, reg_dst} = 2'b10;
+                reg_write = 1;
+                mem_read = 1;
+                mem_to_reg = 1;
+                alu_src = 1;
             end
             // SW
             4'b0101: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b0010;
-                {alu_op, branch, jump} = 3'b000;
-                {alu_src, reg_dst} = 2'b10;
+                mem_write = 1;
+                alu_src = 1;
             end
             // BEQ
             4'b0110: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b0000;
-                {alu_op, branch, jump} = 3'b011;
-                {alu_src, reg_dst} = 2'b00;
+                branch = 1;
+                alu_op = 2'b01;
             end
             // JMP
             4'b0111: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b0000;
-                {alu_op, branch, jump} = 3'bx1x;
-                {alu_src, reg_dst} = 2'bxx;
-            end
-            // Default: NOP
-            default: begin
-                {reg_write, mem_read, mem_write, mem_to_reg} = 4'b0000;
-                {alu_op, branch, jump} = 3'b000;
-                {alu_src, reg_dst} = 2'b00;
+                jump = 1;
             end
         endcase
     end
