@@ -62,12 +62,13 @@ module control(
             // BEQ
             4'b0110: begin
                 branch = 1;
-                alu_op = 2'b01;
+                alu_op = 2'b01;  // zero check
             end
+            
             // JMP
             4'b0111: begin
                 jump = 1;
             end
-        endcase
+       endcase
     end
 endmodule

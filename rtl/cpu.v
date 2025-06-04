@@ -14,8 +14,8 @@ module cpu(
     wire [3:0] opcode = instruction[15:12];
     wire [3:0] Rs = instruction[11:8];
     wire [3:0] Rt = instruction[7:4];
-    wire [3:0] Rd_or_Offset = instruction[3:0];
-    wire [11:0] Offset12 = instruction[11:0];
+    wire [3:0] Rd = instruction[3:0];
+    wire [11:0] abs_address = instruction[11:0];
 
     // Register file
     wire [15:0] read_data1, read_data2;
@@ -51,8 +51,12 @@ module cpu(
         .reg_dst(reg_dst)
     );
 
-    // Sign extension
-    wire [15:0] sign_ext_offset = {{12{Rd_or_Offset[3]}}, Rd_or_Offset};
+    // Sign extension for ALU operations (LW/SW)
+    wire [15:0] sign_ext_offset = {{12{Rd[3]}}, Rd};  // Restored for ALU
+
+    // Absolute target address
+    wire [15:0] absolute_target = {4'b0, abs_address};
+    wire [15:0] mem_word_address = absolute_target >> 1;  // For memory access
 
     // ALU input selection
     wire [15:0] alu_b = alu_src ? sign_ext_offset : read_data2;
@@ -83,15 +87,13 @@ module cpu(
     assign write_data = mem_to_reg ? mem_read_data : alu_result;
 
     // Register destination MUX
-    assign write_reg = reg_dst ? Rd_or_Offset : Rt;
+    assign write_reg = reg_dst ? Rd : Rt;
 
     // Branch/jump logic
     wire branch_condition = branch & zero;
-    wire [15:0] branch_target = PC_plus_2 + (sign_ext_offset << 1);
-    wire [15:0] jump_target = {PC_plus_2[15:12], Offset12} << 1;
     wire [15:0] next_PC = 
-        jump          ? jump_target :
-        branch_condition ? branch_target : 
+        jump             ? absolute_target :
+        branch_condition ? absolute_target :
         PC_plus_2;
 
     // PC update
