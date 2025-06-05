@@ -7,7 +7,7 @@ module dmem(
     output reg [15:0] read_data
 );
     // reg [15:0] mem [0:65535];  // 64K words (128KB)
-    reg [15:0] mem [0:2];
+    reg [15:0] mem [0:1024];  // 1K words (2KB) for compile time (testing)
 
     // Load initial data
     initial begin
