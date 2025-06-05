@@ -1,16 +1,9 @@
-// Implementation of for(R4=0; R4 != R3; R4+=R5)
-
-// setup
-4000	// lw 0
-0203	// put it to r3
-4002	// lw 2
-0205	// put it to r5
-
-0454	// increment r4 by r5
-
-1346	// check if r4 equals r3
-6016	// jump if 0 to #0012
-
-7008	// jump to #000A
-
-7010    // HALT: jump to self
+4000
+0023
+4001
+0025
+2004
+0454
+1346
+6000
+7005
