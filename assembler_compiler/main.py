@@ -1,6 +1,6 @@
 import sys
 
-from transformer.transformer import transform
+from transformer import transform
 
 if __name__ == "__main__":
     args = sys.argv

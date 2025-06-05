@@ -52,10 +52,10 @@ class AssemblyLexer(object):
         t.value = int(t.value.replace("%r", ""))
         return t
 
-    # Define a rule so we can track line numbers (not used)
-    # def t_newline(self, t):
-    #     r"\n+"
-    #     t.lexer.lineno += len(t.value)
+    # Define a rule so we can track line numbers
+    def t_newline(self, t):
+        r"\n+"
+        t.lexer.lineno += len(t.value)
 
     # A string containing ignored characters (spaces and tabs)
     t_ignore = " \t"
