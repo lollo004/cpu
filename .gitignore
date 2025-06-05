@@ -1,2 +1,4 @@
 cpu.vcd
 cpu_sim
+__pycache__
+.DS_Store
