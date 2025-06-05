@@ -23,15 +23,6 @@ def parse_tokens(tokens: List[LexToken], expected_len: int, expected_types: List
     return [token.value for token in tokens]
 
 
-def parse(reg_tokens, expected_len):
-    if len(reg_tokens) != expected_len:
-        raise TypeError("len {reg_tokens} != {expected_len}")
-    for reg in reg_tokens:
-        if reg.type != "REG":
-            raise TypeError(f"not a register {reg}")
-    return [int(token.value) for token in reg_tokens]
-
-
 def int_to_hex_str(num, leading_zeros_count):
     if isinstance(num, str):
         num = int(num)
