@@ -1,4 +1,4 @@
 // hex/data.hex
-000A  // Address 0: 10
-0005  // Address 2: 5
-0000  // Address 4: (will be overwritten)
+000A  // Address 0
+0002  // Address 2
+0000  // Address 4
