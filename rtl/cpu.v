@@ -17,6 +17,11 @@ module cpu(
     wire [3:0] Rd = instruction[3:0];
     wire [11:0] abs_address = instruction[11:0];
 
+    // Override register indices for LW/SW
+    wire [3:0] regfile_read_reg2 = (opcode == 4'b0101) ? 4'd2 : Rt; // SW: force read r2
+    wire [3:0] regfile_write_reg = (opcode == 4'b0100) ? 4'd2 :     // LW: force write r2
+                                  (reg_dst ? Rd : Rt);              // Default MUX
+
     // Register file
     wire [15:0] read_data1, read_data2;
     wire reg_write;
@@ -26,18 +31,18 @@ module cpu(
         .clk(clk),
         .rst(rst),
         .read_reg1(Rs),
-        .read_reg2(Rt),
+        .read_reg2(regfile_read_reg2),
         .read_data1(read_data1),
         .read_data2(read_data2),
         .write_en(reg_write),
-        .write_reg(write_reg),
+        .write_reg(regfile_write_reg),
         .write_data(write_data)
     );
 
     // Control unit
     wire mem_read, mem_write, mem_to_reg, branch, jump;
     wire [1:0] alu_op;
-    wire alu_src, reg_dst;
+    wire reg_dst;
     control control_inst(
         .opcode(opcode),
         .reg_write(reg_write),
@@ -47,26 +52,21 @@ module cpu(
         .alu_op(alu_op),
         .branch(branch),
         .jump(jump),
-        .alu_src(alu_src),
+        //.alu_src(alu_src),
         .reg_dst(reg_dst)
     );
 
-    // Sign extension for ALU operations (LW/SW)
-    wire [15:0] sign_ext_offset = {{12{Rd[3]}}, Rd};  // Restored for ALU
-
-    // Absolute target address
-    wire [15:0] absolute_target = {4'b0, abs_address};
-    wire [15:0] mem_word_address = absolute_target >> 1;  // For memory access
-
-    // ALU input selection
-    wire [15:0] alu_b = alu_src ? sign_ext_offset : read_data2;
+    // Absolute address handling
+    wire [15:0] absolute_target = {4'b0, abs_address};  // 0-extend to 16 bits
+    wire [15:0] mem_addr = (opcode == 4'b0100 || opcode == 4'b0101) ? 
+                           absolute_target : alu_result;  // MUX for memory address
 
     // ALU
     wire [15:0] alu_result;
     wire zero;
     alu alu_inst(
         .a(read_data1),
-        .b(alu_b),
+        .b(read_data2),
         .op(alu_op),
         .result(alu_result),
         .zero(zero)
@@ -76,7 +76,7 @@ module cpu(
     wire [15:0] mem_read_data;
     dmem dmem_inst(
         .clk(clk),
-        .addr(alu_result),
+        .addr(mem_addr),
         .write_data(read_data2),
         .mem_write(mem_write),
         .mem_read(mem_read),

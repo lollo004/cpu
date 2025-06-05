@@ -19,7 +19,6 @@ module control(
         alu_op = 2'b00;
         branch = 0;
         jump = 0;
-        alu_src = 0;
         reg_dst = 0;
 
         case (opcode)
@@ -52,17 +51,14 @@ module control(
                 reg_write = 1;
                 mem_read = 1;
                 mem_to_reg = 1;
-                alu_src = 1;
             end
             // SW
             4'b0101: begin
                 mem_write = 1;
-                alu_src = 1;
             end
             // BEQ
             4'b0110: begin
                 branch = 1;
-                alu_op = 2'b01;  // zero check
             end
             
             // JMP
