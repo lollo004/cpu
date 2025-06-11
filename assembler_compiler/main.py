@@ -14,7 +14,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Convert to absolute Path objects based on current working dir
     input_path = Path(args.filename).resolve()
     output_path = Path(args.output).resolve()
 
