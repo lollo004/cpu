@@ -1,64 +1,79 @@
+`timescale 1ns/1ps
+
 module tb_cpu;
     reg clk = 0;
     reg rst = 1;
-    
+
     cpu uut (.*);
-    
-    always #5 clk = ~clk;  // 10ns clock period
-    
-    // Function to decode instruction into assembly string
-    function [127:0] decode_instr(input [15:0] instr);
-        reg [3:0] opcode, rs, rt, rd;
+
+    // Clock generation
+    always #5 clk = ~clk;
+
+    // Memory view configuration
+    parameter DMEM_START_ADDR = 0;
+    parameter DMEM_WORDS = 4;  // number of 16-bit words
+
+    // Change detection
+    reg [15:0] last_regs [15:0];
+    reg [15:0] last_dmem [0:1023];
+
+    // Helper: Instruction decoder (simple)
+    function [256*8-1:0] decode_instr;
+        input [15:0] instr;
+        reg [3:0] op, rs, rt, rd;
+        reg [11:0] imm;
         begin
-            opcode = instr[15:12];
-            rs     = instr[11:8];
-            rt     = instr[7:4];
-            rd     = instr[3:0];
-            case (opcode)
-                4'h0: decode_instr = $sformatf("ADD  R%0d, R%0d, R%0d", rd, rs, rt);
-                4'h1: decode_instr = $sformatf("SUB  R%0d, R%0d, R%0d", rd, rs, rt);
-                4'h2: decode_instr = $sformatf("AND  R%0d, R%0d, R%0d", rd, rs, rt);
-                4'h3: decode_instr = $sformatf("OR   R%0d, R%0d, R%0d", rd, rs, rt);
-                4'h4: decode_instr = $sformatf("LW   R2, [0x%03X]", instr[11:0]);
-                4'h5: decode_instr = $sformatf("SW   R2, [0x%03X]", instr[11:0]);
-                4'h6: decode_instr = $sformatf("BEQZ (Z), [0x%03X]", instr[11:0]);
-                4'h7: decode_instr = $sformatf("JMP  [0x%03X]", instr[11:0]);
+            op = instr[15:12];
+            rs = instr[11:8];
+            rt = instr[7:4];
+            rd = instr[3:0];
+            imm = instr[11:0];
+
+            case (op)
+                4'h0: decode_instr = {"ADD R",rd + "0",", R",rs + "0",", R",rt + "0"};
+                4'h1: decode_instr = {"SUB R",rd + "0",", R",rs + "0",", R",rt + "0"};
+                4'h2: decode_instr = {"AND R",rd + "0",", R",rs + "0",", R",rt + "0"};
+                4'h3: decode_instr = {"OR  R",rd + "0",", R",rs + "0",", R",rt + "0"};
+                4'h4: decode_instr = {"LW  R2, [", imm, "]"};
+                4'h5: decode_instr = {"SW  R",rt + "0",", [", imm, "]"};
+                4'h6: decode_instr = {"BEQ ", imm};
+                4'h7: decode_instr = {"JMP ", imm};
                 default: decode_instr = "UNKNOWN";
             endcase
         end
     endfunction
-    
+
     integer i;
     always @(posedge clk) begin
-        $display("\n--- Cycle %0t ---", $time);
-        $display("PC = %0d", uut.PC);
-        $display("Instruction = 0x%04h (%s)", uut.instruction, decode_instr(uut.instruction));
-        
-        // Display registers r0..r15
-        $write("Registers: ");
-        for (i = 0; i < 16; i = i + 1) begin
-            $write("R%0d=%0d ", i, uut.regfile_inst.registers[i]);
+        $display("\n================ Cycle @ %t ================\n", $time);
+        $display("PC       = %0d", uut.PC);
+        $display("InstrHex = %h", uut.instruction);
+        $display("Decoded  = %s", decode_instr(uut.instruction));
+        $display("Zero     = %b | ALU Zero = %b", uut.zero_flag, uut.alu_zero);
+
+        $display("\nRegisters (R2–R15):");
+        for (i = 2; i < 16; i = i + 1) begin
+            $write("R[%0d] = %h", i, uut.regfile_inst.registers[i]);
+            if (uut.regfile_inst.registers[i] !== last_regs[i])
+                $write("  ← CHANGED");
+            $display("");
+            last_regs[i] = uut.regfile_inst.registers[i];
         end
-        $write("\n");
-        
-        // Display Zero flag
-        $display("Zero flag: %b", uut.zero_flag);
-        
-        // Display first 10 instructions in imem
-        $display("Instruction Memory (first 10):");
-        for (i = 0; i < 10; i = i + 1)
-            $display("  IMEM[%0d] = 0x%04h", i, uut.imem_inst.mem[i]);
-        
-        // Display first 10 data memory entries
-        $display("Data Memory (first 10):");
-        for (i = 0; i < 10; i = i + 1)
-            $display("  DMEM[%0d] = 0x%04h", i, uut.dmem_inst.mem[i]);
+
+        $display("\nData Memory [%0d to %0d]:", DMEM_START_ADDR, DMEM_START_ADDR + DMEM_WORDS - 1);
+        for (i = 0; i < DMEM_WORDS; i = i + 1) begin
+            $write("DMEM[%0d] = %h", DMEM_START_ADDR + i, uut.dmem_inst.mem[DMEM_START_ADDR + i]);
+            if (uut.dmem_inst.mem[DMEM_START_ADDR + i] !== last_dmem[DMEM_START_ADDR + i])
+                $write("  ← CHANGED");
+            $display("");
+            last_dmem[DMEM_START_ADDR + i] = uut.dmem_inst.mem[DMEM_START_ADDR + i];
+        end
     end
 
     initial begin
         $dumpfile("cpu.vcd");
         $dumpvars(0, tb_cpu);
-        #10 rst = 0;  // Release reset after 10ns
-        #600 $finish; // Run simulation for enough cycles
+        #10 rst = 0;
+        #300 $finish;
     end
 endmodule
