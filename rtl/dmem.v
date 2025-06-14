@@ -11,19 +11,38 @@ module dmem(
 
     // Load initial data
     initial begin
-        // Load initial data
         $readmemh("mem/data.mem", mem);
     end    
 
+    // Write on positive edge of clock
     always @(posedge clk) begin
         if (mem_write)
             mem[addr[15:1]] <= write_data;  // Word addressing
     end
 
+    // Asynchronous read
     always @(*) begin
         if (mem_read)
             read_data = mem[addr[15:1]];  // Asynchronous read
         else
             read_data = 16'b0;
     end
+
+    // Debugging: Memory dump task
+    task dump_memory;
+        integer i;
+        begin
+            $display("\n------ Data Memory Dump ------");
+            for (i = 0; i < 8; i = i + 1) begin
+                $display("mem[%0d] = %0d", i, mem[i]);
+            end
+            $display("--------------------------------\n");
+        end
+    endtask
+
+    // Automatically write memory to file at end of simulation
+    initial begin
+        $writememh("mem_dump.txt", mem);
+    end
+
 endmodule
