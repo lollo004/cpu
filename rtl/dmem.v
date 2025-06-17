@@ -42,7 +42,7 @@ module dmem(
 
     // Automatically write memory to file at end of simulation
     initial begin
-        $writememh("mem_dump.txt", mem);
+        $writememh("mem/data_dump.mem", mem);
     end
 
 endmodule
