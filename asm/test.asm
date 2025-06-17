@@ -15,5 +15,8 @@ Start:
 Loop:
     add %r4 %r5 %r4
     sub %r3 %r4 %r6
-    beq Start
+    beq Halt
     jmp Loop
+
+Halt:
+    jmp Halt
