@@ -4,7 +4,7 @@ module tb_cpu;
     reg clk = 0;
     reg rst = 1;
     integer cycle = 0;
-    integer prev_pc = 100;
+    integer prev_pc = -1;
     integer i;
 
     // Instantiate the CPU
