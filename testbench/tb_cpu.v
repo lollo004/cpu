@@ -22,17 +22,14 @@ module tb_cpu;
         begin
             opcode = instr[15:12];
             case (opcode)
-                4'h0: decode_instr = "NOP";
-                4'h1: decode_instr = "ADD";
-                4'h2: decode_instr = "SUB";
-                4'h3: decode_instr = "AND";
-                4'h4: decode_instr = "OR";
-                4'h5: decode_instr = "XOR";
-                4'h6: decode_instr = "ADDI";
-                4'h7: decode_instr = "LW";
-                4'h8: decode_instr = "SW";
-                4'h9: decode_instr = "BEQ";
-                4'hA: decode_instr = "JMP";
+                4'h0: decode_instr = "ADD";
+                4'h1: decode_instr = "SUB";
+                4'h2: decode_instr = "AND";
+                4'h3: decode_instr = "OR";
+                4'h4: decode_instr = "LW";
+                4'h5: decode_instr = "SW";
+                4'h6: decode_instr = "BEQ";
+                4'h7: decode_instr = "JMP";
                 default: decode_instr = "UNKN";
             endcase
         end
