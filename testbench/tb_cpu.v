@@ -4,7 +4,6 @@ module tb_cpu;
     reg clk = 0;
     reg rst = 1;
     integer cycle = 0;
-    integer prev_pc = -1;
     integer i;
 
     // Instantiate the CPU
@@ -69,15 +68,14 @@ module tb_cpu;
         $display(""); // newline
 
         // Stop condition (JMP to self)
-        if (uut.PC == prev_pc) begin
-            $display("\nHalt received. Stopping simulation.");
+        if (uut.next_PC == uut.PC) begin
+            $display("\nHalt detected. Stopping simulation.");
 
             if (uut.regfile_inst.registers[6] == 0)
                 $display("✅ TEST PASSED: r6 == 0");
             else
                 $display("❌ TEST FAILED: r6 = %0d (expected 0)", uut.regfile_inst.registers[6]);
             $finish;
-        prev_pc = uut.PC;
         end
     end
 
