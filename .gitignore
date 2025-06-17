@@ -5,3 +5,4 @@ __pycache__
 .DS_Store
 venv
 sim.out
+data_memory_dump.txt
