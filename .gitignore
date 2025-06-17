@@ -3,3 +3,4 @@ cpu_sim
 __pycache__
 .DS_Store
 venv
+sim.out
