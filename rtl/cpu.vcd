@@ -1,90 +1,97 @@
 $date
-	Tue Jun  3 11:57:37 2025
+	Thu Jun 12 00:21:12 2025
 $end
 $version
 	Icarus Verilog
 $end
 $timescale
-	1s
+	1ps
 $end
 $scope module tb_cpu $end
-$var reg 1 ! clk $end
-$var reg 1 " rst $end
+$var wire 16 ! PC [15:0] $end
+$var wire 16 " instr [15:0] $end
+$var wire 1 # zero_flag $end
+$var reg 1 $ clk $end
+$var reg 1 % rst $end
+$var integer 32 & cycle_count [31:0] $end
+$scope function decode_instr $end
+$var reg 16 ' instr [15:0] $end
+$upscope $end
 $scope module uut $end
-$var wire 1 # branch_condition $end
-$var wire 1 ! clk $end
-$var wire 1 " rst $end
-$var wire 1 $ zero $end
-$var wire 4 % write_reg [3:0] $end
-$var wire 16 & write_data [15:0] $end
-$var wire 16 ' sign_ext_offset [15:0] $end
-$var wire 1 ( reg_write $end
-$var wire 1 ) reg_dst $end
-$var wire 16 * read_data2 [15:0] $end
-$var wire 16 + read_data1 [15:0] $end
-$var wire 4 , opcode [3:0] $end
-$var wire 16 - next_PC [15:0] $end
-$var wire 1 . mem_write $end
-$var wire 1 / mem_to_reg $end
-$var wire 16 0 mem_read_data [15:0] $end
-$var wire 1 1 mem_read $end
-$var wire 16 2 jump_target [15:0] $end
-$var wire 1 3 jump $end
-$var wire 16 4 instruction [15:0] $end
-$var wire 16 5 branch_target [15:0] $end
-$var wire 1 6 branch $end
-$var wire 1 7 alu_src $end
-$var wire 16 8 alu_result [15:0] $end
-$var wire 2 9 alu_op [1:0] $end
-$var wire 16 : alu_b [15:0] $end
-$var wire 4 ; Rt [3:0] $end
-$var wire 4 < Rs [3:0] $end
-$var wire 4 = Rd_or_Offset [3:0] $end
-$var wire 16 > PC_plus_2 [15:0] $end
-$var wire 12 ? Offset12 [11:0] $end
-$var reg 16 @ PC [15:0] $end
+$var wire 1 ( branch_condition $end
+$var wire 1 $ clk $end
+$var wire 1 % rst $end
+$var wire 1 ) update_zero $end
+$var wire 16 * write_data [15:0] $end
+$var wire 4 + regfile_write_reg [3:0] $end
+$var wire 4 , regfile_read_reg2 [3:0] $end
+$var wire 1 - reg_write $end
+$var wire 1 . reg_dst $end
+$var wire 16 / read_data2 [15:0] $end
+$var wire 16 0 read_data1 [15:0] $end
+$var wire 4 1 opcode [3:0] $end
+$var wire 16 2 next_PC [15:0] $end
+$var wire 1 3 mem_write $end
+$var wire 1 4 mem_to_reg $end
+$var wire 16 5 mem_read_data [15:0] $end
+$var wire 1 6 mem_read $end
+$var wire 16 7 mem_addr [15:0] $end
+$var wire 1 8 jump $end
+$var wire 16 9 instruction [15:0] $end
+$var wire 1 : branch $end
+$var wire 1 ; alu_zero $end
+$var wire 16 < alu_result [15:0] $end
+$var wire 2 = alu_op [1:0] $end
+$var wire 16 > absolute_target [15:0] $end
+$var wire 12 ? abs_address [11:0] $end
+$var wire 4 @ Rt [3:0] $end
+$var wire 4 A Rs [3:0] $end
+$var wire 4 B Rd [3:0] $end
+$var wire 16 C PC_plus_2 [15:0] $end
+$var reg 16 D PC [15:0] $end
+$var reg 1 E zero_flag $end
 $scope module alu_inst $end
-$var wire 16 A b [15:0] $end
-$var wire 1 $ zero $end
-$var wire 2 B op [1:0] $end
-$var wire 16 C a [15:0] $end
-$var reg 16 D result [15:0] $end
+$var wire 1 ; zero $end
+$var wire 2 F op [1:0] $end
+$var wire 16 G b [15:0] $end
+$var wire 16 H a [15:0] $end
+$var reg 16 I result [15:0] $end
 $upscope $end
 $scope module control_inst $end
-$var wire 4 E opcode [3:0] $end
-$var reg 2 F alu_op [1:0] $end
-$var reg 1 7 alu_src $end
-$var reg 1 6 branch $end
-$var reg 1 3 jump $end
-$var reg 1 1 mem_read $end
-$var reg 1 / mem_to_reg $end
-$var reg 1 . mem_write $end
-$var reg 1 ) reg_dst $end
-$var reg 1 ( reg_write $end
+$var wire 4 J opcode [3:0] $end
+$var reg 2 K alu_op [1:0] $end
+$var reg 1 L alu_src $end
+$var reg 1 : branch $end
+$var reg 1 8 jump $end
+$var reg 1 6 mem_read $end
+$var reg 1 4 mem_to_reg $end
+$var reg 1 3 mem_write $end
+$var reg 1 . reg_dst $end
+$var reg 1 - reg_write $end
 $upscope $end
 $scope module dmem_inst $end
-$var wire 16 G addr [15:0] $end
-$var wire 1 ! clk $end
-$var wire 1 1 mem_read $end
-$var wire 1 . mem_write $end
-$var wire 16 H write_data [15:0] $end
-$var reg 16 I read_data [15:0] $end
+$var wire 16 M addr [15:0] $end
+$var wire 1 $ clk $end
+$var wire 1 6 mem_read $end
+$var wire 1 3 mem_write $end
+$var wire 16 N write_data [15:0] $end
+$var reg 16 O read_data [15:0] $end
 $upscope $end
 $scope module imem_inst $end
-$var wire 16 J addr [15:0] $end
-$var reg 16 K instruction [15:0] $end
+$var wire 16 P addr [15:0] $end
+$var reg 16 Q instruction [15:0] $end
 $upscope $end
 $scope module regfile_inst $end
-$var wire 1 ! clk $end
-$var wire 4 L read_reg1 [3:0] $end
-$var wire 4 M read_reg2 [3:0] $end
-$var wire 1 " rst $end
-$var wire 16 N write_data [15:0] $end
-$var wire 1 ( write_en $end
-$var wire 4 O write_reg [3:0] $end
-$var reg 16 P read_data1 [15:0] $end
-$var reg 16 Q read_data2 [15:0] $end
-$var integer 32 R i [31:0] $end
+$var wire 1 $ clk $end
+$var wire 4 R read_reg1 [3:0] $end
+$var wire 4 S read_reg2 [3:0] $end
+$var wire 1 % rst $end
+$var wire 16 T write_data [15:0] $end
+$var wire 1 - write_en $end
+$var wire 4 U write_reg [3:0] $end
+$var reg 16 V read_data1 [15:0] $end
+$var reg 16 W read_data2 [15:0] $end
+$var integer 32 X i [31:0] $end
 $upscope $end
 $upscope $end
 $upscope $end
@@ -94,910 +101,173 @@ $dumpall
 $end
 #0
 $dumpvars
-b10000 R
-b0 Q
-b0 P
-b0 O
-b0 N
-b0 M
-b0 L
-b0 K
-b0 J
-b0 I
-b0 H
-b0 G
-b0 F
-b0 E
-b0 D
-b0 C
-b0 B
-b0 A
-b0 @
-b0 ?
-b10 >
-b0 =
-b0 <
-b0 ;
-b0 :
-b0 9
-b0 8
-07
-06
-b10 5
-b0 4
-03
-b0 2
-01
-b0 0
-0/
-0.
-b10 -
-b0 ,
-b0 +
-b0 *
-1)
-1(
-b0 '
-b0 &
-b0 %
-1$
-0#
-1"
-0!
-$end
-#5
-b10000 R
-1!
-#10
-0!
-0"
-#15
-1#
-b10001101000 2
-b100 %
-b100 O
-16
-b1100 -
-b1000110100 ?
-b100 '
-b100 =
-b11 ;
-b11 M
-b10 <
-b10 L
-b1 ,
-b1 E
-b1001000110100 4
-b1001000110100 K
-b1100 5
-b100 >
-b10 @
-b10 J
-1!
-#20
-0!
-#25
-bx &
-bx N
-bx :
-bx A
-x$
-bx 8
-bx D
-bx G
-0#
-b0xxxxxxxxxxxx0 2
-bx %
-bx O
-bx *
-bx H
+b10000 X
+bx W
+bx V
+bx U
+bx T
+bx S
+bx R
 bx Q
-bx +
-bx C
-bx P
-0)
-06
-0(
-b1110 -
-bx ?
-bx '
-bx =
-bx ;
+b0 P
+bx O
+bx N
 bx M
-bx <
-bx L
-bx ,
-bx E
-bx 4
+xL
 bx K
+bx J
+bx I
+bx H
+bx G
+bx F
+0E
+b0 D
+b10 C
+bx B
+bx A
+bx @
+bx ?
+b0xxxxxxxxxxxx0 >
+bx =
+bx <
+x;
+x:
+bx 9
+x8
+bx 7
+x6
 bx 5
-b1110 >
-b1100 @
-b1100 J
-1!
-#30
-0!
-#35
-b10000 -
-b10000 >
-b1110 @
-b1110 J
-1!
-#40
-0!
-#45
-b10010 -
-b10010 >
-b10000 @
-b10000 J
-1!
-#50
-0!
-#55
-b10100 -
-b10100 >
-b10010 @
-b10010 J
-1!
-#60
-0!
-#65
-b10110 -
-b10110 >
-b10100 @
-b10100 J
-1!
-#70
-0!
-#75
-b11000 -
-b11000 >
-b10110 @
-b10110 J
-1!
-#80
-0!
-#85
-b11010 -
-b11010 >
-b11000 @
-b11000 J
-1!
-#90
-0!
-#95
-b11100 -
-b11100 >
-b11010 @
-b11010 J
-1!
-#100
-0!
-#105
-b11110 -
-b11110 >
-b11100 @
-b11100 J
-1!
-#110
-0!
-#115
-b100000 -
-b100000 >
-b11110 @
-b11110 J
-1!
-#120
-0!
-#125
-b100010 -
-b100010 >
-b100000 @
-b100000 J
-1!
-#130
-0!
-#135
-b100100 -
-b100100 >
-b100010 @
-b100010 J
-1!
-#140
-0!
-#145
-b100110 -
-b100110 >
-b100100 @
-b100100 J
-1!
-#150
-0!
-#155
-b101000 -
-b101000 >
-b100110 @
-b100110 J
-1!
-#160
-0!
-#165
-b101010 -
-b101010 >
-b101000 @
-b101000 J
-1!
-#170
-0!
-#175
-b101100 -
-b101100 >
-b101010 @
-b101010 J
-1!
-#180
-0!
-#185
-b101110 -
-b101110 >
-b101100 @
-b101100 J
-1!
-#190
-0!
-#195
-b110000 -
-b110000 >
-b101110 @
-b101110 J
-1!
-#200
-0!
-#205
-b110010 -
-b110010 >
-b110000 @
-b110000 J
-1!
-#210
-0!
-#215
-b110100 -
-b110100 >
-b110010 @
-b110010 J
-1!
-#220
-0!
-#225
-b110110 -
-b110110 >
-b110100 @
-b110100 J
-1!
-#230
-0!
-#235
-b111000 -
-b111000 >
-b110110 @
-b110110 J
-1!
-#240
-0!
-#245
-b111010 -
-b111010 >
-b111000 @
-b111000 J
-1!
-#250
-0!
-#255
-b111100 -
-b111100 >
-b111010 @
-b111010 J
-1!
-#260
-0!
-#265
-b111110 -
-b111110 >
-b111100 @
-b111100 J
-1!
-#270
-0!
-#275
-b1000000 -
-b1000000 >
-b111110 @
-b111110 J
-1!
-#280
-0!
-#285
-b1000010 -
-b1000010 >
-b1000000 @
-b1000000 J
-1!
-#290
-0!
-#295
-b1000100 -
-b1000100 >
-b1000010 @
-b1000010 J
-1!
-#300
-0!
-#305
-b1000110 -
-b1000110 >
-b1000100 @
-b1000100 J
-1!
-#310
-0!
-#315
-b1001000 -
-b1001000 >
-b1000110 @
-b1000110 J
-1!
-#320
-0!
-#325
-b1001010 -
-b1001010 >
-b1001000 @
-b1001000 J
-1!
-#330
-0!
-#335
-b1001100 -
-b1001100 >
-b1001010 @
-b1001010 J
-1!
-#340
-0!
-#345
-b1001110 -
-b1001110 >
-b1001100 @
-b1001100 J
-1!
-#350
-0!
-#355
-b1010000 -
-b1010000 >
-b1001110 @
-b1001110 J
-1!
-#360
-0!
-#365
-b1010010 -
-b1010010 >
-b1010000 @
-b1010000 J
-1!
-#370
-0!
-#375
-b1010100 -
-b1010100 >
-b1010010 @
-b1010010 J
-1!
-#380
-0!
-#385
-b1010110 -
-b1010110 >
-b1010100 @
-b1010100 J
-1!
-#390
-0!
-#395
-b1011000 -
-b1011000 >
-b1010110 @
-b1010110 J
-1!
-#400
-0!
-#405
-b1011010 -
-b1011010 >
-b1011000 @
-b1011000 J
-1!
-#410
-0!
-#415
-b1011100 -
-b1011100 >
-b1011010 @
-b1011010 J
-1!
-#420
-0!
-#425
-b1011110 -
-b1011110 >
-b1011100 @
-b1011100 J
-1!
-#430
-0!
-#435
-b1100000 -
-b1100000 >
-b1011110 @
-b1011110 J
-1!
-#440
-0!
-#445
-b1100010 -
-b1100010 >
-b1100000 @
-b1100000 J
-1!
-#450
-0!
-#455
-b1100100 -
-b1100100 >
-b1100010 @
-b1100010 J
-1!
-#460
-0!
-#465
-b1100110 -
-b1100110 >
-b1100100 @
-b1100100 J
-1!
-#470
-0!
-#475
-b1101000 -
-b1101000 >
-b1100110 @
-b1100110 J
-1!
-#480
-0!
-#485
-b1101010 -
-b1101010 >
-b1101000 @
-b1101000 J
-1!
-#490
-0!
-#495
-b1101100 -
-b1101100 >
-b1101010 @
-b1101010 J
-1!
-#500
-0!
-#505
-b1101110 -
-b1101110 >
-b1101100 @
-b1101100 J
-1!
-#510
-0!
-#515
-b1110000 -
-b1110000 >
-b1101110 @
-b1101110 J
-1!
-#520
-0!
-#525
-b1110010 -
-b1110010 >
-b1110000 @
-b1110000 J
-1!
-#530
-0!
-#535
-b1110100 -
-b1110100 >
-b1110010 @
-b1110010 J
-1!
-#540
-0!
-#545
-b1110110 -
-b1110110 >
-b1110100 @
-b1110100 J
-1!
-#550
-0!
-#555
-b1111000 -
-b1111000 >
-b1110110 @
-b1110110 J
-1!
-#560
-0!
-#565
-b1111010 -
-b1111010 >
-b1111000 @
-b1111000 J
-1!
-#570
-0!
-#575
-b1111100 -
-b1111100 >
-b1111010 @
-b1111010 J
-1!
-#580
-0!
-#585
-b1111110 -
-b1111110 >
-b1111100 @
-b1111100 J
-1!
-#590
-0!
-#595
-b10000000 -
-b10000000 >
-b1111110 @
-b1111110 J
-1!
-#600
-0!
-#605
-b10000010 -
-b10000010 >
-b10000000 @
-b10000000 J
-1!
-#610
-0!
-#615
-b10000100 -
-b10000100 >
-b10000010 @
-b10000010 J
-1!
-#620
-0!
-#625
-b10000110 -
-b10000110 >
-b10000100 @
-b10000100 J
-1!
-#630
-0!
-#635
-b10001000 -
-b10001000 >
-b10000110 @
-b10000110 J
-1!
-#640
-0!
-#645
-b10001010 -
-b10001010 >
-b10001000 @
-b10001000 J
-1!
-#650
-0!
-#655
-b10001100 -
-b10001100 >
-b10001010 @
-b10001010 J
-1!
-#660
-0!
-#665
-b10001110 -
-b10001110 >
-b10001100 @
-b10001100 J
-1!
-#670
-0!
-#675
-b10010000 -
-b10010000 >
-b10001110 @
-b10001110 J
-1!
-#680
-0!
-#685
-b10010010 -
-b10010010 >
-b10010000 @
-b10010000 J
-1!
-#690
-0!
-#695
-b10010100 -
-b10010100 >
-b10010010 @
-b10010010 J
-1!
-#700
-0!
-#705
-b10010110 -
-b10010110 >
-b10010100 @
-b10010100 J
-1!
-#710
-0!
-#715
-b10011000 -
-b10011000 >
-b10010110 @
-b10010110 J
-1!
-#720
-0!
-#725
-b10011010 -
-b10011010 >
-b10011000 @
-b10011000 J
-1!
-#730
-0!
-#735
-b10011100 -
-b10011100 >
-b10011010 @
-b10011010 J
-1!
-#740
-0!
-#745
-b10011110 -
-b10011110 >
-b10011100 @
-b10011100 J
-1!
-#750
-0!
-#755
-b10100000 -
-b10100000 >
-b10011110 @
-b10011110 J
-1!
-#760
-0!
-#765
-b10100010 -
-b10100010 >
-b10100000 @
-b10100000 J
-1!
-#770
-0!
-#775
-b10100100 -
-b10100100 >
-b10100010 @
-b10100010 J
-1!
-#780
-0!
-#785
-b10100110 -
-b10100110 >
-b10100100 @
-b10100100 J
-1!
-#790
-0!
-#795
-b10101000 -
-b10101000 >
-b10100110 @
-b10100110 J
-1!
-#800
-0!
-#805
-b10101010 -
-b10101010 >
-b10101000 @
-b10101000 J
-1!
-#810
-0!
-#815
-b10101100 -
-b10101100 >
-b10101010 @
-b10101010 J
-1!
-#820
-0!
-#825
-b10101110 -
-b10101110 >
-b10101100 @
-b10101100 J
-1!
-#830
-0!
-#835
-b10110000 -
-b10110000 >
-b10101110 @
-b10101110 J
-1!
-#840
-0!
-#845
-b10110010 -
-b10110010 >
-b10110000 @
-b10110000 J
-1!
-#850
-0!
-#855
-b10110100 -
-b10110100 >
-b10110010 @
-b10110010 J
-1!
-#860
-0!
-#865
-b10110110 -
-b10110110 >
-b10110100 @
-b10110100 J
-1!
-#870
-0!
-#875
-b10111000 -
-b10111000 >
-b10110110 @
-b10110110 J
-1!
-#880
-0!
-#885
-b10111010 -
-b10111010 >
-b10111000 @
-b10111000 J
-1!
-#890
-0!
-#895
-b10111100 -
-b10111100 >
-b10111010 @
-b10111010 J
-1!
-#900
-0!
-#905
-b10111110 -
-b10111110 >
-b10111100 @
-b10111100 J
-1!
-#910
-0!
-#915
-b11000000 -
-b11000000 >
-b10111110 @
-b10111110 J
-1!
-#920
-0!
-#925
-b11000010 -
-b11000010 >
-b11000000 @
-b11000000 J
-1!
-#930
-0!
-#935
-b11000100 -
-b11000100 >
-b11000010 @
-b11000010 J
-1!
-#940
-0!
-#945
-b11000110 -
-b11000110 >
-b11000100 @
-b11000100 J
-1!
-#950
-0!
-#955
-b11001000 -
-b11001000 >
-b11000110 @
-b11000110 J
-1!
-#960
-0!
-#965
-b11001010 -
-b11001010 >
-b11001000 @
-b11001000 J
-1!
-#970
-0!
-#975
-b11001100 -
-b11001100 >
-b11001010 @
-b11001010 J
-1!
-#980
-0!
-#985
-b11001110 -
-b11001110 >
-b11001100 @
-b11001100 J
-1!
-#990
-0!
-#995
-b11010000 -
-b11010000 >
-b11001110 @
-b11001110 J
-1!
-#1000
-0!
-#1005
-b11010010 -
-b11010010 >
-b11010000 @
-b11010000 J
-1!
-#1010
-0!
+x4
+x3
+b0xxxxxxxxxxxx0 2
+bx 1
+bx 0
+bx /
+x.
+x-
+bx ,
+bx +
+bx *
+x)
+x(
+bx '
+b0 &
+1%
+0$
+0#
+bx "
+b0 !
+$end
+#5000
+b1 &
+b10000 X
+1$
+#10000
+0$
+0%
+#15000
+bx 2
+b10 &
+bx C
+b0xxxxxxxxxxxx0 !
+b0xxxxxxxxxxxx0 D
+b0xxxxxxxxxxxx0 P
+1$
+#20000
+0$
+#25000
+b11 &
+bx !
+bx D
+bx P
+1$
+#30000
+0$
+#35000
+b100 &
+1$
+#40000
+0$
+#45000
+b101 &
+1$
+#50000
+0$
+#55000
+b110 &
+1$
+#60000
+0$
+#65000
+b111 &
+1$
+#70000
+0$
+#75000
+b1000 &
+1$
+#80000
+0$
+#85000
+b1001 &
+1$
+#90000
+0$
+#95000
+b1010 &
+1$
+#100000
+0$
+#105000
+b1011 &
+1$
+#110000
+0$
+#115000
+b1100 &
+1$
+#120000
+0$
+#125000
+b1101 &
+1$
+#130000
+0$
+#135000
+b1110 &
+1$
+#140000
+0$
+#145000
+b1111 &
+1$
+#150000
+0$
+#155000
+b10000 &
+1$
+#160000
+0$
+#165000
+b10001 &
+1$
+#170000
+0$
+#175000
+b10010 &
+1$
+#180000
+0$
+#185000
+b10011 &
+1$
+#190000
+0$
+#195000
+b10100 &
+1$
+#200000
+0$
+#205000
+b10101 &
+1$
