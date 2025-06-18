@@ -23,17 +23,22 @@ class AssemblyLexer(object):
         "SECTION",
         "NUMBER",
         "REG",
+        "COMMENT",
     ) + tuple(reserved.values())
 
     # Regular expression rules for tokens
 
+    def t_COMMENT(self, t):
+        r"\#.*$"
+        # Ignoring the comments
+
     def t_LABEL(self, t):
-        r"[a-zA-Z]+:"
+        r"[a-zA-Z][a-zA-Z0-9_]*:"
         t.value = t.value.replace(":", "")
         return t
 
     def t_VAR(self, t):
-        r"[a-zA-Z]+"
+        r"[a-zA-Z][a-zA-Z0-9_]*"
         t.type = reserved.get(t.value.lower(), "VAR")
         return t
 
