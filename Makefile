@@ -20,7 +20,7 @@ view: $(WAVEFORM)
 	gtkwave $(WAVEFORM)
 
 compile: $(ASM_INPUT) $(ASSEMBLER)
-	python3 $(ASSEMBLER) $(ASM_INPUT) -o $(ASM_OUTPUT_DIR)
+	poetry -C assembler_compiler run python main.py ../asm/test.asm -o ../mem
 
 clean:
 	rm -f $(TARGET) $(WAVEFORM)
